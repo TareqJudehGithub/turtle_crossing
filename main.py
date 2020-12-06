@@ -8,6 +8,7 @@ from scoreboard import Scoreboard
 screen = Screen()
 player = Player()
 cars = CarManager()
+scoreboard = Scoreboard()
 
 # Page setup:
 screen.setup(width=600, height=600)
@@ -26,4 +27,16 @@ while game_is_on:
     cars.move_cars()
 
     # Detect collision with car
+    for car in cars.all_cars:
+        if player.distance(car) < 20:
+            game_is_on = False
+            scoreboard.game_over()
+            time.sleep(5)
 
+    # Detect successful crossing:
+    if player.is_at_finish_line():
+        time.sleep(2)
+        print("You win!")
+        player.go_to_start()
+        cars.level_up()
+        scoreboard.increase_leve()
